@@ -287,43 +287,53 @@
 
         @media (max-width: 768px) {
             .whatsapp-popup {
-                width: 95vw;
-                max-width: 350px;
-                bottom: 110px;
-                left: 50%;
-                transform: translateX(-50%);
-                right: auto;
+                width: 90vw;
+                max-width: 320px;
+                bottom: 100px;
+                left: 5vw;
+                right: 5vw;
+                transform: none;
+                position: fixed;
+                z-index: 1002;
             }
             .whatsapp-button {
-                width: 80px;
-                height: 80px;
+                width: 70px;
+                height: 70px;
             }
             .whatsapp-button svg {
-                width: 40px;
-                height: 40px;
-            }
-            .whatsapp-messages {
-                max-height: 250px;
-                padding: 12px;
-            }
-            .whatsapp-actions {
-                padding: 12px;
-            }
-            .whatsapp-quick-reply {
-                font-size: 11px;
-                padding: 6px 12px;
-                margin: 3px 3px 3px 0;
-            }
-            .message-bubble {
-                font-size: 13px;
-                padding: 6px 10px;
-            }
-            .whatsapp-header {
-                padding: 12px;
-            }
-            .whatsapp-avatar {
                 width: 35px;
                 height: 35px;
+            }
+            .whatsapp-messages {
+                max-height: 200px;
+                padding: 10px;
+                font-size: 12px;
+            }
+            .whatsapp-actions {
+                padding: 10px;
+            }
+            .whatsapp-quick-reply {
+                font-size: 10px;
+                padding: 5px 10px;
+                margin: 2px 2px 2px 0;
+                display: inline-block;
+                width: auto;
+            }
+            .message-bubble {
+                font-size: 12px;
+                padding: 5px 8px;
+                max-width: 85%;
+            }
+            .whatsapp-header {
+                padding: 10px;
+            }
+            .whatsapp-avatar {
+                width: 30px;
+                height: 30px;
+            }
+            .whatsapp-widget {
+                bottom: 15px;
+                left: 15px;
             }
         }
     </style>
@@ -1471,6 +1481,11 @@
 
         // Drag functionality
         function startDrag(e) {
+            // Skip drag on mobile for better tap experience
+            if (window.innerWidth <= 768) {
+                return;
+            }
+            
             e.preventDefault();
             isDragging = true;
             dragStarted = false;
@@ -1557,9 +1572,14 @@
         whatsappButton.addEventListener('mousedown', startDrag);
         whatsappButton.addEventListener('touchstart', startDrag);
 
-        // Toggle popup (backup for non-drag clicks)
+        // Direct click for mobile
         whatsappButton.addEventListener('click', (e) => {
-            if (!dragStarted) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                togglePopup();
+                removeBadge();
+            } else if (!dragStarted) {
                 e.stopPropagation();
             }
         });
@@ -1777,7 +1797,7 @@
         // Load widget position from localStorage
         function loadWidgetPosition() {
             const savedPosition = localStorage.getItem('whatsappWidgetPosition');
-            if (savedPosition) {
+            if (savedPosition && window.innerWidth > 768) {
                 const position = JSON.parse(savedPosition);
                 whatsappWidget.style.left = position.left + 'px';
                 whatsappWidget.style.top = position.top + 'px';
