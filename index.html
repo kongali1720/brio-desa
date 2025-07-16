@@ -85,7 +85,7 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
-            z-index: 1000;
+            z-index: 9999;
             cursor: move;
             user-select: none;
             transition: all 0.3s ease;
@@ -110,9 +110,10 @@
             align-items: center;
             justify-content: center;
             cursor: grab;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
             transition: all 0.3s ease;
             animation: pulse 2s infinite;
+            border: 4px solid #fff;
         }
 
         .whatsapp-button:hover {
@@ -121,9 +122,18 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
-            50% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.6); }
-            100% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+            0% { 
+                box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6); 
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 12px 30px rgba(37, 211, 102, 0.8); 
+                transform: scale(1.05);
+            }
+            100% { 
+                box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6); 
+                transform: scale(1);
+            }
         }
 
         .whatsapp-popup {
@@ -294,15 +304,15 @@
                 right: 5vw;
                 transform: none;
                 position: fixed;
-                z-index: 1002;
+                z-index: 10000;
             }
             .whatsapp-button {
-                width: 70px;
-                height: 70px;
+                width: 80px;
+                height: 80px;
             }
             .whatsapp-button svg {
-                width: 35px;
-                height: 35px;
+                width: 40px;
+                height: 40px;
             }
             .whatsapp-messages {
                 max-height: 200px;
@@ -334,6 +344,7 @@
             .whatsapp-widget {
                 bottom: 15px;
                 left: 15px;
+                z-index: 9999;
             }
         }
     </style>
@@ -1489,11 +1500,6 @@
 
         // Drag functionality
         function startDrag(e) {
-            // Skip drag on mobile for better tap experience
-            if (window.innerWidth <= 768) {
-                return;
-            }
-            
             e.preventDefault();
             isDragging = true;
             dragStarted = false;
@@ -1503,9 +1509,13 @@
             dragOffset.x = (e.clientX || e.touches[0].clientX) - rect.left;
             dragOffset.y = (e.clientY || e.touches[0].clientY) - rect.top;
             
-            whatsappWidget.classList.add('dragging');
-            whatsappPopup.style.display = 'none';
-            isPopupOpen = false;
+            // Set a timer to detect if this is actually a drag or just a click
+            setTimeout(() => {
+                if (isDragging && !dragStarted) {
+                    // If still "dragging" but haven't moved, it's probably just a click
+                    return;
+                }
+            }, 150);
             
             document.addEventListener('mousemove', drag);
             document.addEventListener('mouseup', stopDrag);
@@ -1518,32 +1528,49 @@
             
             e.preventDefault();
             
-            if (!dragStarted) {
-                dragStarted = true;
-                whatsappButton.style.animation = 'none';
-            }
-            
             const clientX = e.clientX || e.touches[0].clientX;
             const clientY = e.clientY || e.touches[0].clientY;
             
-            let newLeft = clientX - dragOffset.x;
-            let newTop = clientY - dragOffset.y;
+            // Calculate movement distance to determine if this is actually a drag
+            const moveDistance = Math.sqrt(
+                Math.pow(clientX - (whatsappWidget.getBoundingClientRect().left + dragOffset.x), 2) +
+                Math.pow(clientY - (whatsappWidget.getBoundingClientRect().top + dragOffset.y), 2)
+            );
             
-            // Constrain to viewport
-            const maxLeft = window.innerWidth - whatsappWidget.offsetWidth;
-            const maxTop = window.innerHeight - whatsappWidget.offsetHeight;
+            // Only start dragging if moved more than 5 pixels
+            if (moveDistance > 5 && !dragStarted) {
+                dragStarted = true;
+                whatsappButton.style.animation = 'none';
+                whatsappWidget.classList.add('dragging');
+                // Close popup when starting to drag
+                whatsappPopup.style.display = 'none';
+                isPopupOpen = false;
+            }
             
-            newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-            newTop = Math.max(0, Math.min(newTop, maxTop));
-            
-            whatsappWidget.style.left = newLeft + 'px';
-            whatsappWidget.style.top = newTop + 'px';
-            whatsappWidget.style.bottom = 'auto';
-            whatsappWidget.style.right = 'auto';
+            // Only move widget if drag has actually started
+            if (dragStarted) {
+                let newLeft = clientX - dragOffset.x;
+                let newTop = clientY - dragOffset.y;
+                
+                // Constrain to viewport
+                const maxLeft = window.innerWidth - whatsappWidget.offsetWidth;
+                const maxTop = window.innerHeight - whatsappWidget.offsetHeight;
+                
+                newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+                newTop = Math.max(0, Math.min(newTop, maxTop));
+                
+                whatsappWidget.style.left = newLeft + 'px';
+                whatsappWidget.style.top = newTop + 'px';
+                whatsappWidget.style.bottom = 'auto';
+                whatsappWidget.style.right = 'auto';
+            }
         }
 
         function stopDrag(e) {
             if (!isDragging) return;
+            
+            const clickDuration = Date.now() - clickStartTime;
+            const wasActuallyDragged = dragStarted;
             
             isDragging = false;
             whatsappWidget.classList.remove('dragging');
@@ -1558,11 +1585,22 @@
                 whatsappButton.style.animation = 'pulse 2s infinite';
             }, 300);
             
-            // If it was a quick click (not drag), toggle popup
-            const clickDuration = Date.now() - clickStartTime;
-            if (!dragStarted && clickDuration < 200) {
+            // Only toggle popup if it was NOT actually dragged and was a quick click
+            if (!wasActuallyDragged && clickDuration < 500) {
                 togglePopup();
+                removeBadge();
             }
+            
+            // If it was actually dragged, save position and snap
+            if (wasActuallyDragged) {
+                setTimeout(() => {
+                    saveWidgetPosition();
+                    snapToEdges();
+                }, 100);
+            }
+            
+            // Reset drag state
+            dragStarted = false;
         }
 
         // Toggle popup function
@@ -1582,15 +1620,23 @@
         whatsappButton.addEventListener('mousedown', startDrag);
         whatsappButton.addEventListener('touchstart', startDrag);
 
-        // Direct click for mobile
+        // Click handler for both mobile and desktop
         whatsappButton.addEventListener('click', (e) => {
+            // For mobile, always handle click directly
             if (window.innerWidth <= 768) {
                 e.preventDefault();
                 e.stopPropagation();
                 togglePopup();
                 removeBadge();
-            } else if (!dragStarted) {
+                return;
+            }
+            
+            // For desktop, only handle if not dragging
+            if (!isDragging && !dragStarted) {
+                e.preventDefault();
                 e.stopPropagation();
+                togglePopup();
+                removeBadge();
             }
         });
 
@@ -1939,15 +1985,6 @@
             }, 300);
         }
 
-        // Update stopDrag to include snap functionality
-        const originalStopDrag = stopDrag;
-        stopDrag = function(e) {
-            originalStopDrag(e);
-            if (dragStarted) {
-                setTimeout(snapToEdges, 100);
-            }
-        };
-
         // Save widget position to localStorage
         function saveWidgetPosition() {
             const rect = whatsappWidget.getBoundingClientRect();
@@ -1969,18 +2006,6 @@
                 whatsappWidget.style.right = 'auto';
             }
         }
-
-        // Save position when dragging stops
-        const originalStopDragWithSave = stopDrag;
-        stopDrag = function(e) {
-            originalStopDragWithSave(e);
-            if (dragStarted) {
-                setTimeout(() => {
-                    saveWidgetPosition();
-                    snapToEdges();
-                }, 100);
-            }
-        };
 
         // Load position on page load
         loadWidgetPosition();
