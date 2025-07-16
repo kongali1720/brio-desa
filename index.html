@@ -287,9 +287,12 @@
 
         @media (max-width: 768px) {
             .whatsapp-popup {
-                width: 280px;
-                bottom: 130px;
-                left: -10px;
+                width: 95vw;
+                max-width: 350px;
+                bottom: 110px;
+                left: 50%;
+                transform: translateX(-50%);
+                right: auto;
             }
             .whatsapp-button {
                 width: 80px;
@@ -298,6 +301,29 @@
             .whatsapp-button svg {
                 width: 40px;
                 height: 40px;
+            }
+            .whatsapp-messages {
+                max-height: 250px;
+                padding: 12px;
+            }
+            .whatsapp-actions {
+                padding: 12px;
+            }
+            .whatsapp-quick-reply {
+                font-size: 11px;
+                padding: 6px 12px;
+                margin: 3px 3px 3px 0;
+            }
+            .message-bubble {
+                font-size: 13px;
+                padding: 6px 10px;
+            }
+            .whatsapp-header {
+                padding: 12px;
+            }
+            .whatsapp-avatar {
+                width: 35px;
+                height: 35px;
             }
         }
     </style>
