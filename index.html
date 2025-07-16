@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRIO DESA - Komunitas Honda Brio Bandung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: transform 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem !important; }
+            .hero-text { font-size: 1.1rem !important; }
+            .section-title { font-size: 2.5rem !important; }
+            .card-grid { grid-template-columns: 1fr !important; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .benefits-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .contact-grid { grid-template-columns: 1fr !important; }
+            .footer-grid { grid-template-columns: 1fr !important; }
+            .mobile-padding { padding: 1rem !important; }
+            .mobile-text { font-size: 0.9rem !important; }
+        }
+        
+        /* Button animations */
+        .btn-primary {
+            background: linear-gradient(45deg, #3B82F6, #1D4ED8);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover { color: black; }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10B981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <img src="keys/brio-logo?prompt=Honda%20Brio%20car%20logo%20with%20text%20BRIO%20DESA%20modern%20design" alt="BRIO DESA Logo" class="h-10 w-auto mr-3">
+                    <span class="text-2xl font-bold text-blue-800">BRIO DESA</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 font-medium">Beranda</a>
+                    <a href="#tentang" class="text-gray-700 hover:text-blue-600 font-medium">Tentang</a>
+                    <a href="#kegiatan" class="text-gray-700 hover:text-blue-600 font-medium">Kegiatan</a>
+                    <a href="#member" class="text-gray-700 hover:text-blue-600 font-medium">Member</a>
+                    <a href="#galeri" class="text-gray-700 hover:text-blue-600 font-medium">Galeri</a>
+                    <a href="#kontak" class="text-gray-700 hover:text-blue-600 font-medium">Kontak</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="text-white pt-20 relative overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://raw.githubusercontent.com/kongali1720/kongali1720.github.io/main/mobilbriodesa.jpg" 
+                 alt="Honda Brio DESA" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 py-20">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="mobile-padding">
+                    <h1 class="hero-title text-3xl md:text-5xl font-bold mb-6 drop-shadow-lg">Selamat Datang di <span class="text-yellow-400">BRIO DESA</span></h1>
+                    <p class="hero-text text-lg md:text-xl mb-8 opacity-90 drop-shadow-md">Komunitas Honda Brio Terbesar di Bandung. Bersama kita berbagi passion, pengalaman, dan petualangan dengan Brio kesayangan!</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="joinBtn" class="btn-primary bg-white text-blue-800 px-6 md:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition flex items-center justify-center shadow-lg">
+                            <span class="mr-2">👥</span> Gabung Sekarang
+                        </button>
+                        <button id="learnBtn" class="border-2 border-white px-6 md:px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-800 transition flex items-center justify-center backdrop-blur-sm">
+                            <span class="mr-2">📖</span> Pelajari Lebih
+                        </button>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 shadow-2xl">
+                        <h3 class="text-2xl font-bold mb-4">🚗 BRIO DESA BANDUNG</h3>
+                        <p class="text-lg mb-4">Komunitas Resmi Honda Brio</p>
+                        <div class="flex justify-center space-x-4">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold">200+</div>
+                                <div class="text-sm opacity-80">Members</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold">5+</div>
+                                <div class="text-sm opacity-80">Tahun</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold">50+</div>
+                                <div class="text-sm opacity-80">Events</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="tentang" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 mobile-padding">
+            <div class="text-center mb-16">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800 mb-4">Tentang BRIO DESA</h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mobile-text">Komunitas yang didirikan dengan semangat kekeluargaan untuk para pecinta Honda Brio di Kota Bandung dan sekitarnya</p>
+            </div>
+            
+            <div class="card-grid grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-4xl mb-4">🚗</div>
+                    <h3 class="text-xl font-semibold mb-3">Passion for Brio</h3>
+                    <p class="text-gray-600">Berbagi kecintaan terhadap Honda Brio dengan sesama enthusiast</p>
+                </div>
+                <div class="text-center card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-4xl mb-4">👥</div>
+                    <h3 class="text-xl font-semibold mb-3">Komunitas Solid</h3>
+                    <p class="text-gray-600">Membangun ikatan persaudaraan yang kuat antar member</p>
+                </div>
+                <div class="text-center card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-4xl mb-4">🏔️</div>
+                    <h3 class="text-xl font-semibold mb-3">Explore Bandung</h3>
+                    <p class="text-gray-600">Menjelajahi keindahan Bandung dan sekitarnya bersama</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kegiatan Section -->
+    <section id="kegiatan" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 mobile-padding">
+            <div class="text-center mb-16">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800 mb-4">Kegiatan Rutin</h2>
+                <p class="text-lg md:text-xl text-gray-600 mobile-text">Berbagai aktivitas seru yang kami lakukan setiap bulannya</p>
+            </div>
+
+            <div class="card-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+                    <img src="keys/touring-brio?prompt=Honda%20Brio%20cars%20convoy%20touring%20mountain%20road%20Bandung%20scenic" alt="Touring" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Touring Rutin</h3>
+                        <p class="text-gray-600 mb-4">Touring bulanan ke destinasi menarik di sekitar Bandung dan Jawa Barat</p>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Setiap Minggu Ke-2</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+                    <img src="keys/kopdar-brio?prompt=Honda%20Brio%20owners%20gathering%20meeting%20cafe%20bandung%20friendly%20atmosphere" alt="Kopdar" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Kopdar Mingguan</h3>
+                        <p class="text-gray-600 mb-4">Kopi darat rutin untuk sharing pengalaman dan tips perawatan Brio</p>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Setiap Sabtu</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+                    <img src="keys/workshop-brio?prompt=car%20workshop%20Honda%20Brio%20maintenance%20tutorial%20learning%20session" alt="Workshop" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Workshop & Tips</h3>
+                        <p class="text-gray-600 mb-4">Sharing knowledge tentang modifikasi dan perawatan Brio</p>
+                        <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">Bulanan</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+                    <img src="keys/charity-brio?prompt=Honda%20Brio%20community%20charity%20event%20helping%20people%20bandung%20social%20activity" alt="Charity" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Kegiatan Sosial</h3>
+                        <p class="text-gray-600 mb-4">Bakti sosial dan kegiatan amal untuk membantu masyarakat</p>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Sesuai Program</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+                    <img src="keys/contest-brio?prompt=Honda%20Brio%20car%20contest%20show%20modification%20competition%20bandung" alt="Contest" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Contest & Show</h3>
+                        <p class="text-gray-600 mb-4">Kompetisi modifikasi dan car show untuk showcase Brio terbaik</p>
+                        <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">Tahunan</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+                    <img src="keys/family-gathering?prompt=Honda%20Brio%20family%20gathering%20picnic%20bandung%20children%20playing%20community" alt="Family Gathering" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Family Gathering</h3>
+                        <p class="text-gray-600 mb-4">Acara keluarga besar BRIO DESA dengan berbagai games seru</p>
+                        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Semester</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Member Section -->
+    <section id="member" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 mobile-padding">
+            <div class="text-center mb-16">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800 mb-4">Daftar Member BRIO DESA</h2>
+                <p class="text-lg md:text-xl text-gray-600 mobile-text">Keluarga besar BRIO DESA yang tersebar di Bandung dan sekitarnya</p>
+            </div>
+
+            <!-- Member Registration Form -->
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-12 shadow-lg">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">📝 Daftar Jadi Member Baru</h3>
+                        <p class="text-gray-600">Bergabunglah dengan keluarga besar BRIO DESA dan nikmati semua benefit ekslusif!</p>
+                    </div>
+                    <button id="registerBtn" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition shadow-lg flex items-center">
+                        <span class="mr-2">✏️</span> Daftar Member
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="flex flex-col md:flex-row gap-4 mb-8">
+                <div class="flex-1">
+                    <input type="text" id="searchMember" placeholder="🔍 Cari nama member..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <select id="filterCity" class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="">📍 Semua Kota</option>
+                    <option value="Bandung">Bandung</option>
+                    <option value="Cimahi">Cimahi</option>
+                    <option value="Sumedang">Sumedang</option>
+                    <option value="Garut">Garut</option>
+                </select>
+                <select id="filterYear" class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="">📅 Semua Tahun Brio</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                </select>
+            </div>
+
+            <!-- Member Statistics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-blue-100 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-blue-800" id="totalMembers">0</div>
+                    <div class="text-sm text-blue-600">Total Member</div>
+                </div>
+                <div class="bg-green-100 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-800" id="activeMembers">0</div>
+                    <div class="text-sm text-green-600">Member Aktif</div>
+                </div>
+                <div class="bg-purple-100 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-purple-800" id="newMembers">0</div>
+                    <div class="text-sm text-purple-600">Member Baru</div>
+                </div>
+                <div class="bg-yellow-100 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-yellow-800" id="cities">0</div>
+                    <div class="text-sm text-yellow-600">Kota</div>
+                </div>
+            </div>
+
+            <!-- Member List -->
+            <div id="memberList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Member cards will be inserted here by JavaScript -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button id="loadMoreBtn" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition" style="display: none;">
+                    📄 Muat Lebih Banyak
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeri Section -->
+    <section id="galeri" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 mobile-padding">
+            <div class="text-center mb-16">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800 mb-4">Galeri Kegiatan</h2>
+                <p class="text-lg md:text-xl text-gray-600 mobile-text">Dokumentasi momen-momen berharga bersama BRIO DESA</p>
+            </div>
+
+            <div class="gallery-grid grid grid-cols-2 md:grid-cols-4 gap-4">
+                <img src="keys/gallery1?prompt=Honda%20Brio%20group%20photo%20bandung%20mountains%20background%20happy%20members" alt="Gallery 1" class="w-full h-48 object-cover rounded-lg hover:scale-105 transition-transform">
+                <img src="keys/gallery2?prompt=Honda%20Brio%20touring%20convoy%20scenic%20road%20west%20java%20beautiful%20landscape" alt="Gallery 2" class="w-full h-48 object-cover rounded-lg hover:scale-105 transition-transform">
+                <img src="keys/gallery3?prompt=Honda%20Brio%20modified%20cars%20show%20parking%20bandung%20colorful%20modifications" alt="Gallery 3" class="w-full h-48 object-cover rounded-lg hover:scale-105 transition-transform">
+                <img src="keys/gallery4?prompt=Honda%20Brio%20community%20meeting%20restaurant%20bandung%20friendly%20atmosphere%20food" alt="Gallery 4" class="w-full h-48 object-cover rounded-lg hover:scale-105 transition-transform">
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Benefits -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 mobile-padding">
+            <div class="text-center mb-16">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800 mb-4">Keuntungan Member</h2>
+                <p class="text-lg md:text-xl text-gray-600 mobile-text">Berbagai benefit menarik yang bisa didapat sebagai member BRIO DESA</p>
+            </div>
+
+            <div class="benefits-grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="text-center bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-3xl mb-4">🔧</div>
+                    <h4 class="font-semibold mb-2">Discount Service</h4>
+                    <p class="text-gray-600 text-sm">Diskon di bengkel rekanan komunitas</p>
+                </div>
+                <div class="text-center bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-3xl mb-4">🎁</div>
+                    <h4 class="font-semibold mb-2">Merchandise</h4>
+                    <p class="text-gray-600 text-sm">Merchandise eksklusif BRIO DESA</p>
+                </div>
+                <div class="text-center bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-3xl mb-4">📱</div>
+                    <h4 class="font-semibold mb-2">WhatsApp Group</h4>
+                    <p class="text-gray-600 text-sm">Akses grup WA untuk sharing info</p>
+                </div>
+                <div class="text-center bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-3xl mb-4">🏆</div>
+                    <h4 class="font-semibold mb-2">Priority Event</h4>
+                    <p class="text-gray-600 text-sm">Prioritas di event dan touring</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="kontak" class="py-20 bg-blue-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 mobile-padding">
+            <div class="text-center mb-16">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-4">Hubungi Kami</h2>
+                <p class="text-lg md:text-xl opacity-90 mobile-text">Tertarik bergabung? Hubungi kami untuk informasi lebih lanjut</p>
+            </div>
+
+            <div class="contact-grid grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm hover:bg-opacity-20 transition">
+                    <div class="mb-4">
+                        <svg class="w-12 h-12 mx-auto text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.386"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">WhatsApp</h3>
+                    <button id="waBtn" class="text-lg font-bold hover:text-green-300 transition">+62 812-3456-7890</button>
+                    <p class="text-sm opacity-75">Admin BRIO DESA - Klik untuk chat</p>
+                </div>
+                <div class="text-center bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm hover:bg-opacity-20 transition">
+                    <div class="mb-4">
+                        <svg class="w-12 h-12 mx-auto text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h1.818l8.545 6.545 8.546-6.545h1.818c.904 0 1.636.732 1.636 1.636z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Email</h3>
+                    <button id="emailBtn" class="text-lg font-bold hover:text-red-300 transition">info@briodesa.com</button>
+                    <p class="text-sm opacity-75">Official Email - Klik untuk kirim</p>
+                </div>
+                <div class="text-center bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm hover:bg-opacity-20 transition">
+                    <div class="mb-4">
+                        <svg class="w-12 h-12 mx-auto text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Base Camp</h3>
+                    <button id="mapBtn" class="text-lg font-bold hover:text-blue-300 transition">Jl. Raya Bandung</button>
+                    <p class="text-sm opacity-75">Kota Bandung - Klik untuk lokasi</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button id="joinMainBtn" class="btn-primary bg-white text-blue-800 px-6 md:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition flex items-center justify-center mx-auto">
+                    <span class="mr-2">🚗</span> Gabung BRIO DESA Sekarang!
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 mobile-padding">
+            <div class="footer-grid grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">BRIO DESA</h4>
+                    <p class="text-gray-400 text-sm">Komunitas Honda Brio terbesar di Bandung. Bersama kita berkembang!</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#home" class="text-gray-400 hover:text-white">Beranda</a></li>
+                        <li><a href="#tentang" class="text-gray-400 hover:text-white">Tentang</a></li>
+                        <li><a href="#kegiatan" class="text-gray-400 hover:text-white">Kegiatan</a></li>
+                        <li><a href="#member" class="text-gray-400 hover:text-white">Member</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+                    <div class="flex flex-col space-y-3">
+                        <button id="fbBtn" class="flex items-center text-left text-gray-400 hover:text-blue-400 transition">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            Facebook - @BrioDesa
+                        </button>
+                        <button id="igBtn" class="flex items-center text-left text-gray-400 hover:text-pink-400 transition">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.618 5.367 11.986 11.988 11.986s11.987-5.368 11.987-11.986C24.014 5.367 18.635.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.611-3.132-1.551l3.132-2.439v3.99zm-.794-5.556L4.523 8.803C5.378 7.548 6.778 6.706 8.383 6.706c1.207 0 2.246.486 3.019 1.259.774.774 1.26 1.812 1.26 3.02 0 1.605-.842 3.005-2.097 3.86l-2.91-3.413zm9.861 1.421l-3.699 2.885c-.685-.94-1.836-1.551-3.132-1.551V9.298l6.831 3.555z"/>
+                            </svg>
+                            Instagram - @briodesa_bdg
+                        </button>
+                        <button id="ytBtn" class="flex items-center text-left text-gray-400 hover:text-red-400 transition">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                            YouTube - BRIO DESA TV
+                        </button>
+                        <button id="tiktokBtn" class="flex items-center text-left text-gray-400 hover:text-white transition">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                            </svg>
+                            TikTok - @briodesa.bdg
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-3">Dapatkan update kegiatan terbaru</p>
+                    <button id="subscribeBtn" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition w-full">📧 Subscribe Newsletter</button>
+                </div>
+            </div>
+            <hr class="my-8 border-gray-600">
+            <div class="text-center text-gray-400 text-sm">
+                <p>&copy; 2025 BRIO DESA Bandung. All rights reserved. Made with ❤️ for Brio Community</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal untuk Join -->
+    <div id="joinModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeJoin">&times;</span>
+            <h2 class="text-2xl font-bold mb-4 text-center">🚗 Gabung BRIO DESA</h2>
+            <div class="text-center">
+                <p class="mb-4">Untuk bergabung dengan komunitas BRIO DESA, silakan hubungi admin kami:</p>
+                <div class="space-y-4">
+                    <button id="joinWA" class="w-full bg-green-500 text-white py-3 px-4 rounded-lg hover:bg-green-600 transition flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.386"/>
+                        </svg>
+                        Chat WhatsApp Admin
+                    </button>
+                    <button id="joinIG" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 rounded-lg hover:from-purple-600 hover:to-pink-600 transition flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.618 5.367 11.986 11.988 11.986s11.987-5.368 11.987-11.986C24.014 5.367 18.635.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.611-3.132-1.551l3.132-2.439v3.99zm-.794-5.556L4.523 8.803C5.378 7.548 6.778 6.706 8.383 6.706c1.207 0 2.246.486 3.019 1.259.774.774 1.26 1.812 1.26 3.02 0 1.605-.842 3.005-2.097 3.86l-2.91-3.413zm9.861 1.421l-3.699 2.885c-.685-.94-1.836-1.551-3.132-1.551V9.298l6.831 3.555z"/>
+                        </svg>
+                        Follow Instagram Kami
+                    </button>
+                </div>
+                <p class="text-sm text-gray-600 mt-4">Atau datang langsung ke base camp kami di Bandung!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Learn More -->
+    <div id="learnModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeLearn">&times;</span>
+            <h2 class="text-2xl font-bold mb-4 text-center">📖 Tentang BRIO DESA</h2>
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800">🏠 Komunitas Keluarga</h3>
+                    <p class="text-sm text-blue-700">Kami adalah komunitas yang mengutamakan rasa kekeluargaan dan saling membantu antar member.</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-green-800">🌟 Kegiatan Beragam</h3>
+                    <p class="text-sm text-green-700">Touring, kopdar, workshop, charity, dan family gathering yang rutin diadakan.</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-purple-800">🎯 Member Benefit</h3>
+                    <p class="text-sm text-purple-700">Diskon service, merchandise eksklusif, dan prioritas di setiap event komunitas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Registration Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close" id="closeRegister">&times;</span>
+            <h2 class="text-2xl font-bold mb-6 text-center">📝 Daftar Member BRIO DESA</h2>
+            <form id="memberForm" class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">👤 Nama Lengkap *</label>
+                        <input type="text" id="fullName" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">📞 No. WhatsApp *</label>
+                        <input type="tel" id="whatsapp" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="08123456789">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">📧 Email</label>
+                        <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="email@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">🎂 Tanggal Lahir</label>
+                        <input type="date" id="birthdate" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">📍 Kota Domisili *</label>
+                        <select id="city" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Kota</option>
+                            <option value="Bandung">Bandung</option>
+                            <option value="Cimahi">Cimahi</option>
+                            <option value="Sumedang">Sumedang</option>
+                            <option value="Garut">Garut</option>
+                            <option value="Tasikmalaya">Tasikmalaya</option>
+                            <option value="Purwakarta">Purwakarta</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">🚗 Tahun Brio *</label>
+                        <select id="brioYear" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Tahun</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                            <option value="2014">2014</option>
+                            <option value="2013">2013</option>
+                            <option value="2012">2012</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">🎨 Warna Brio *</label>
+                        <select id="brioColor" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Warna</option>
+                            <option value="Putih">Putih</option>
+                            <option value="Hitam">Hitam</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Merah">Merah</option>
+                            <option value="Biru">Biru</option>
+                            <option value="Abu-abu">Abu-abu</option>
+                            <option value="Orange">Orange</option>
+                            <option value="Kuning">Kuning</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">🔧 Tipe Brio *</label>
+                        <select id="brioType" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Tipe</option>
+                            <option value="Satya E CVT">Satya E CVT</option>
+                            <option value="Satya E MT">Satya E MT</option>
+                            <option value="Satya S CVT">Satya S CVT</option>
+                            <option value="Satya S MT">Satya S MT</option>
+                            <option value="RS CVT">RS CVT</option>
+                            <option value="RS MT">RS MT</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">🏠 Alamat Lengkap</label>
+                    <textarea id="address" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Alamat lengkap (opsional)"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">💬 Kenapa ingin gabung BRIO DESA?</label>
+                    <textarea id="reason" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Ceritakan alasan Anda ingin bergabung..."></textarea>
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" id="agreement" required class="mr-2">
+                    <label for="agreement" class="text-sm text-gray-700">Saya setuju dengan <a href="#" class="text-blue-600 hover:underline">syarat dan ketentuan</a> komunitas BRIO DESA</label>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="button" id="cancelRegister" class="flex-1 bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition">
+                        ❌ Batal
+                    </button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition">
+                        ✅ Daftar Sekarang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script type="module">
+        // Sample member data
+        const membersData = [
+            {
+                id: 1,
+                name: "Andi Pratama",
+                whatsapp: "081234567890",
+                email: "andi@email.com",
+                city: "Bandung",
+                brioYear: "2022",
+                brioColor: "Putih",
+                brioType: "RS CVT",
+                joinDate: "2023-01-15",
+                status: "active"
+            },
+            {
+                id: 2,
+                name: "Sari Dewi",
+                whatsapp: "081234567891",
+                email: "sari@email.com",
+                city: "Cimahi",
+                brioYear: "2021",
+                brioColor: "Merah",
+                brioType: "Satya S CVT",
+                joinDate: "2023-02-20",
+                status: "active"
+            },
+            {
+                id: 3,
+                name: "Budi Santoso",
+                whatsapp: "081234567892",
+                email: "budi@email.com",
+                city: "Bandung",
+                brioYear: "2023",
+                brioColor: "Hitam",
+                brioType: "RS MT",
+                joinDate: "2024-01-10",
+                status: "active"
+            },
+            {
+                id: 4,
+                name: "Maya Sari",
+                whatsapp: "081234567893",
+                email: "maya@email.com",
+                city: "Sumedang",
+                brioYear: "2020",
+                brioColor: "Silver",
+                brioType: "Satya E CVT",
+                joinDate: "2023-06-15",
+                status: "active"
+            },
+            {
+                id: 5,
+                name: "Rendi Wijaya",
+                whatsapp: "081234567894",
+                email: "rendi@email.com",
+                city: "Garut",
+                brioYear: "2022",
+                brioColor: "Biru",
+                brioType: "Satya S MT",
+                joinDate: "2023-09-30",
+                status: "active"
+            },
+            {
+                id: 6,
+                name: "Lina Kartika",
+                whatsapp: "081234567895",
+                email: "lina@email.com",
+                city: "Bandung",
+                brioYear: "2021",
+                brioColor: "Orange",
+                brioType: "RS CVT",
+                joinDate: "2024-03-12",
+                status: "active"
+            },
+            {
+                id: 7,
+                name: "Dedi Kurniawan",
+                whatsapp: "081234567896",
+                email: "dedi@email.com",
+                city: "Cimahi",
+                brioYear: "2019",
+                brioColor: "Abu-abu",
+                brioType: "Satya E MT",
+                joinDate: "2023-11-05",
+                status: "active"
+            },
+            {
+                id: 8,
+                name: "Fitri Handayani",
+                whatsapp: "081234567897",
+                email: "fitri@email.com",
+                city: "Bandung",
+                brioYear: "2023",
+                brioColor: "Kuning",
+                brioType: "RS MT",
+                joinDate: "2024-05-18",
+                status: "active"
+            }
+        ];
+
+        let currentMembers = [...membersData];
+        let displayedMembers = 6;
+
+        // Toast function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // Render member card
+        function renderMemberCard(member) {
+            const joinDate = new Date(member.joinDate);
+            const monthsAgo = Math.floor((new Date() - joinDate) / (1000 * 60 * 60 * 24 * 30));
+            
+            return `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover member-card" data-city="${member.city}" data-year="${member.brioYear}">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 p-4 text-white">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold">${member.name}</h3>
+                                <p class="text-sm opacity-90">📍 ${member.city}</p>
+                            </div>
+                            <span class="bg-white/20 px-2 py-1 rounded-full text-xs">
+                                ${member.status === 'active' ? '✅ Aktif' : '💤 Tidak Aktif'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center">
+                                <span class="w-4 mr-2">🚗</span>
+                                <span>Brio ${member.brioYear} - ${member.brioColor}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-4 mr-2">🔧</span>
+                                <span>${member.brioType}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-4 mr-2">📅</span>
+                                <span>Bergabung ${monthsAgo} bulan lalu</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex gap-2">
+                            <button onclick="contactMember('${member.whatsapp}', '${member.name}')" class="flex-1 bg-green-500 text-white py-2 px-3 rounded text-xs hover:bg-green-600 transition">
+                                💬 Chat
+                            </button>
+                            <button onclick="viewMemberProfile(${member.id})" class="flex-1 bg-blue-500 text-white py-2 px-3 rounded text-xs hover:bg-blue-600 transition">
+                                👤 Profil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render member list
+        function renderMemberList(members = currentMembers.slice(0, displayedMembers)) {
+            const memberList = document.getElementById('memberList');
+            memberList.innerHTML = members.map(renderMemberCard).join('');
+            
+            // Update load more button
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (displayedMembers >= currentMembers.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const stats = {
+                total: currentMembers.length,
+                active: currentMembers.filter(m => m.status === 'active').length,
+                newMembers: currentMembers.filter(m => {
+                    const joinDate = new Date(m.joinDate);
+                    const threeMonthsAgo = new Date();
+                    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+                    return joinDate > threeMonthsAgo;
+                }).length,
+                cities: [...new Set(currentMembers.map(m => m.city))].length
+            };
+
+            document.getElementById('totalMembers').textContent = stats.total;
+            document.getElementById('activeMembers').textContent = stats.active;
+            document.getElementById('newMembers').textContent = stats.newMembers;
+            document.getElementById('cities').textContent = stats.cities;
+        }
+
+        // Filter members
+        function filterMembers() {
+            const searchTerm = document.getElementById('searchMember').value.toLowerCase();
+            const selectedCity = document.getElementById('filterCity').value;
+            const selectedYear = document.getElementById('filterYear').value;
+
+            currentMembers = membersData.filter(member => {
+                const matchesSearch = member.name.toLowerCase().includes(searchTerm);
+                const matchesCity = !selectedCity || member.city === selectedCity;
+                const matchesYear = !selectedYear || member.brioYear === selectedYear;
+                
+                return matchesSearch && matchesCity && matchesYear;
+            });
+
+            displayedMembers = 6;
+            renderMemberList();
+            updateStatistics();
+        }
+
+        // Contact member
+        window.contactMember = function(whatsapp, name) {
+            const message = encodeURIComponent(`Halo ${name}, saya melihat profil Anda di website BRIO DESA. Mari kita berteman!`);
+            window.open(`https://wa.me/62${whatsapp.substring(1)}?text=${message}`, '_blank');
+            showToast(`Membuka chat dengan ${name}...`);
+        };
+
+        // View member profile
+        window.viewMemberProfile = function(memberId) {
+            const member = membersData.find(m => m.id === memberId);
+            if (member) {
+                alert(`Profil ${member.name}\n📍 ${member.city}\n🚗 Brio ${member.brioYear} ${member.brioColor}\n📞 ${member.whatsapp}\n📧 ${member.email}`);
+            }
+        };
+
+        // Handle member registration
+        function handleMemberRegistration(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('fullName').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                email: document.getElementById('email').value,
+                city: document.getElementById('city').value,
+                brioYear: document.getElementById('brioYear').value,
+                brioColor: document.getElementById('brioColor').value,
+                brioType: document.getElementById('brioType').value,
+                address: document.getElementById('address').value,
+                reason: document.getElementById('reason').value
+            };
+
+            // Add to members list
+            const newMember = {
+                id: membersData.length + 1,
+                name: formData.name,
+                whatsapp: formData.whatsapp,
+                email: formData.email,
+                city: formData.city,
+                brioYear: formData.brioYear,
+                brioColor: formData.brioColor,
+                brioType: formData.brioType,
+                joinDate: new Date().toISOString().split('T')[0],
+                status: 'active'
+            };
+
+            membersData.unshift(newMember);
+            currentMembers = [...membersData];
+            
+            // Reset form and close modal
+            document.getElementById('memberForm').reset();
+            document.getElementById('registerModal').style.display = 'none';
+            
+            // Update display
+            renderMemberList();
+            updateStatistics();
+            
+            showToast(`🎉 Selamat ${formData.name}! Pendaftaran berhasil. Admin akan segera menghubungi Anda.`);
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.createElement('div');
+        mobileMenu.className = 'md:hidden bg-white border-t shadow-lg';
+        mobileMenu.innerHTML = `
+            <div class="px-4 py-2 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-gray-700 hover:text-blue-600 rounded transition">🏠 Beranda</a>
+                <a href="#tentang" class="block px-3 py-2 text-gray-700 hover:text-blue-600 rounded transition">ℹ️ Tentang</a>
+                <a href="#kegiatan" class="block px-3 py-2 text-gray-700 hover:text-blue-600 rounded transition">📅 Kegiatan</a>
+                <a href="#member" class="block px-3 py-2 text-gray-700 hover:text-blue-600 rounded transition">👥 Member</a>
+                <a href="#galeri" class="block px-3 py-2 text-gray-700 hover:text-blue-600 rounded transition">📸 Galeri</a>
+                <a href="#kontak" class="block px-3 py-2 text-gray-700 hover:text-blue-600 rounded transition">📞 Kontak</a>
+            </div>
+        `;
+
+        let mobileMenuOpen = false;
+        mobileMenuButton.addEventListener('click', () => {
+            if (!mobileMenuOpen) {
+                document.querySelector('nav').appendChild(mobileMenu);
+                mobileMenuOpen = true;
+            } else {
+                mobileMenu.remove();
+                mobileMenuOpen = false;
+            }
+        });
+
+        // Modal functionality
+        const joinModal = document.getElementById('joinModal');
+        const learnModal = document.getElementById('learnModal');
+        
+        // Join buttons
+        document.getElementById('joinBtn').addEventListener('click', () => {
+            joinModal.style.display = 'block';
+        });
+        document.getElementById('joinMainBtn').addEventListener('click', () => {
+            joinModal.style.display = 'block';
+        });
+        
+        // Learn more button
+        document.getElementById('learnBtn').addEventListener('click', () => {
+            learnModal.style.display = 'block';
+        });
+        
+        // Close modals
+        document.getElementById('closeJoin').addEventListener('click', () => {
+            joinModal.style.display = 'none';
+        });
+        document.getElementById('closeLearn').addEventListener('click', () => {
+            learnModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === joinModal) joinModal.style.display = 'none';
+            if (e.target === learnModal) learnModal.style.display = 'none';
+            if (e.target === document.getElementById('registerModal')) {
+                document.getElementById('registerModal').style.display = 'none';
+            }
+        });
+
+        // Member registration modal
+        const registerModal = document.getElementById('registerModal');
+        
+        document.getElementById('registerBtn').addEventListener('click', () => {
+            registerModal.style.display = 'block';
+        });
+        
+        document.getElementById('closeRegister').addEventListener('click', () => {
+            registerModal.style.display = 'none';
+        });
+        
+        document.getElementById('cancelRegister').addEventListener('click', () => {
+            registerModal.style.display = 'none';
+        });
+
+        // Member form submission
+        document.getElementById('memberForm').addEventListener('submit', handleMemberRegistration);
+
+        // Search and filter functionality
+        document.getElementById('searchMember').addEventListener('input', filterMembers);
+        document.getElementById('filterCity').addEventListener('change', filterMembers);
+        document.getElementById('filterYear').addEventListener('change', filterMembers);
+
+        // Load more members
+        document.getElementById('loadMoreBtn').addEventListener('click', () => {
+            displayedMembers += 6;
+            renderMemberList();
+        });
+
+        // Initialize member section
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMemberList();
+            updateStatistics();
+        });
+
+        // Contact buttons
+        document.getElementById('waBtn').addEventListener('click', () => {
+            window.open('https://wa.me/6281234567890?text=Halo%20admin%20BRIO%20DESA%2C%20saya%20ingin%20bergabung%20dengan%20komunitas', '_blank');
+            showToast('Membuka WhatsApp...');
+        });
+        
+        document.getElementById('emailBtn').addEventListener('click', () => {
+            window.location.href = 'mailto:info@briodesa.com?subject=Ingin%20Bergabung%20BRIO%20DESA&body=Halo%2C%20saya%20tertarik%20untuk%20bergabung%20dengan%20komunitas%20BRIO%20DESA.';
+            showToast('Membuka aplikasi email...');
+        });
+        
+        document.getElementById('mapBtn').addEventListener('click', () => {
+            window.open('https://maps.google.com/?q=Jl.+Raya+Bandung,+Kota+Bandung,+Jawa+Barat', '_blank');
+            showToast('Membuka Google Maps...');
+        });
+
+        // Join modal buttons
+        document.getElementById('joinWA').addEventListener('click', () => {
+            window.open('https://wa.me/6281234567890?text=Halo%20admin%20BRIO%20DESA%2C%20saya%20ingin%20bergabung%20dengan%20komunitas', '_blank');
+            joinModal.style.display = 'none';
+            showToast('Membuka WhatsApp Admin...');
+        });
+        
+        document.getElementById('joinIG').addEventListener('click', () => {
+            window.open('https://instagram.com/briodesa_bdg', '_blank');
+            joinModal.style.display = 'none';
+            showToast('Membuka Instagram BRIO DESA...');
+        });
+
+        // Social media buttons
+        document.getElementById('fbBtn').addEventListener('click', () => {
+            window.open('https://facebook.com/briodesa', '_blank');
+            showToast('Membuka Facebook BRIO DESA...');
+        });
+        
+        document.getElementById('igBtn').addEventListener('click', () => {
+            window.open('https://instagram.com/briodesa_bdg', '_blank');
+            showToast('Membuka Instagram BRIO DESA...');
+        });
+        
+        document.getElementById('ytBtn').addEventListener('click', () => {
+            window.open('https://youtube.com/@briodesa', '_blank');
+            showToast('Membuka YouTube BRIO DESA...');
+        });
+        
+        document.getElementById('tiktokBtn').addEventListener('click', () => {
+            window.open('https://tiktok.com/@briodesa.bdg', '_blank');
+            showToast('Membuka TikTok BRIO DESA...');
+        });
+        
+        document.getElementById('subscribeBtn').addEventListener('click', () => {
+            const email = prompt('Masukkan email Anda untuk subscribe newsletter BRIO DESA:');
+            if (email && email.includes('@')) {
+                showToast(`✅ Terima kasih! Newsletter akan dikirim ke ${email}`);
+            } else if (email) {
+                showToast('❌ Email tidak valid, silakan coba lagi');
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                // Close mobile menu if open
+                if (mobileMenuOpen) {
+                    mobileMenu.remove();
+                    mobileMenuOpen = false;
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-white', 'shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Simple animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.card-hover').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Initialize member section when page loads
+        renderMemberList();
+        updateStatistics();
+    </script>
+</body>
+</html>
