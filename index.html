@@ -86,6 +86,19 @@
             bottom: 20px;
             left: 20px;
             z-index: 1000;
+            cursor: move;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-widget.dragging {
+            cursor: grabbing;
+            z-index: 1001;
+            transform: scale(1.05);
+        }
+
+        .whatsapp-widget.dragging .whatsapp-button {
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
         }
 
         .whatsapp-button {
@@ -96,7 +109,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
+            cursor: grab;
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
             transition: all 0.3s ease;
             animation: pulse 2s infinite;
@@ -1421,18 +1434,107 @@
         const whatsappPopup = document.getElementById('whatsappPopup');
         const whatsappClose = document.getElementById('whatsappClose');
         const whatsappMessages = document.getElementById('whatsappMessages');
+        const whatsappWidget = document.querySelector('.whatsapp-widget');
         
         let isPopupOpen = false;
         let messageCount = 2;
+        let isDragging = false;
+        let dragOffset = { x: 0, y: 0 };
+        let clickStartTime = 0;
+        let dragStarted = false;
 
-        // Toggle popup
-        whatsappButton.addEventListener('click', () => {
+        // Drag functionality
+        function startDrag(e) {
+            e.preventDefault();
+            isDragging = true;
+            dragStarted = false;
+            clickStartTime = Date.now();
+            
+            const rect = whatsappWidget.getBoundingClientRect();
+            dragOffset.x = (e.clientX || e.touches[0].clientX) - rect.left;
+            dragOffset.y = (e.clientY || e.touches[0].clientY) - rect.top;
+            
+            whatsappWidget.classList.add('dragging');
+            whatsappPopup.style.display = 'none';
+            isPopupOpen = false;
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('touchend', stopDrag);
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            
+            if (!dragStarted) {
+                dragStarted = true;
+                whatsappButton.style.animation = 'none';
+            }
+            
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            
+            let newLeft = clientX - dragOffset.x;
+            let newTop = clientY - dragOffset.y;
+            
+            // Constrain to viewport
+            const maxLeft = window.innerWidth - whatsappWidget.offsetWidth;
+            const maxTop = window.innerHeight - whatsappWidget.offsetHeight;
+            
+            newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+            newTop = Math.max(0, Math.min(newTop, maxTop));
+            
+            whatsappWidget.style.left = newLeft + 'px';
+            whatsappWidget.style.top = newTop + 'px';
+            whatsappWidget.style.bottom = 'auto';
+            whatsappWidget.style.right = 'auto';
+        }
+
+        function stopDrag(e) {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            whatsappWidget.classList.remove('dragging');
+            
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', stopDrag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('touchend', stopDrag);
+            
+            // Restore pulse animation
+            setTimeout(() => {
+                whatsappButton.style.animation = 'pulse 2s infinite';
+            }, 300);
+            
+            // If it was a quick click (not drag), toggle popup
+            const clickDuration = Date.now() - clickStartTime;
+            if (!dragStarted && clickDuration < 200) {
+                togglePopup();
+            }
+        }
+
+        // Toggle popup function
+        function togglePopup() {
             if (!isPopupOpen) {
                 whatsappPopup.style.display = 'block';
                 isPopupOpen = true;
             } else {
                 whatsappPopup.style.display = 'none';
                 isPopupOpen = false;
+            }
+        }
+
+        // Event listeners for drag
+        whatsappButton.addEventListener('mousedown', startDrag);
+        whatsappButton.addEventListener('touchstart', startDrag);
+
+        // Toggle popup (backup for non-drag clicks)
+        whatsappButton.addEventListener('click', (e) => {
+            if (!dragStarted) {
+                e.stopPropagation();
             }
         });
 
@@ -1584,13 +1686,94 @@
         }, 5000);
 
         // Remove badge when popup is opened
-        whatsappButton.addEventListener('click', () => {
+        function removeBadge() {
             const badge = document.getElementById('whatsappBadge');
             if (badge) {
                 badge.remove();
             }
-            whatsappButton.style.animation = '';
-        });
+        }
+
+        // Add snap-to-edges functionality
+        function snapToEdges() {
+            const rect = whatsappWidget.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            let newLeft = rect.left;
+            let newTop = rect.top;
+            
+            // Snap to nearest edge if close enough (within 50px)
+            if (rect.left < 50) {
+                newLeft = 20;
+            } else if (rect.right > viewportWidth - 50) {
+                newLeft = viewportWidth - whatsappWidget.offsetWidth - 20;
+            }
+            
+            if (rect.top < 50) {
+                newTop = 20;
+            } else if (rect.bottom > viewportHeight - 50) {
+                newTop = viewportHeight - whatsappWidget.offsetHeight - 20;
+            }
+            
+            // Animate to snap position
+            whatsappWidget.style.transition = 'all 0.3s ease';
+            whatsappWidget.style.left = newLeft + 'px';
+            whatsappWidget.style.top = newTop + 'px';
+            
+            // Reset transition after animation
+            setTimeout(() => {
+                whatsappWidget.style.transition = '';
+            }, 300);
+        }
+
+        // Update stopDrag to include snap functionality
+        const originalStopDrag = stopDrag;
+        stopDrag = function(e) {
+            originalStopDrag(e);
+            if (dragStarted) {
+                setTimeout(snapToEdges, 100);
+            }
+        };
+
+        // Save widget position to localStorage
+        function saveWidgetPosition() {
+            const rect = whatsappWidget.getBoundingClientRect();
+            const position = {
+                left: rect.left,
+                top: rect.top
+            };
+            localStorage.setItem('whatsappWidgetPosition', JSON.stringify(position));
+        }
+
+        // Load widget position from localStorage
+        function loadWidgetPosition() {
+            const savedPosition = localStorage.getItem('whatsappWidgetPosition');
+            if (savedPosition) {
+                const position = JSON.parse(savedPosition);
+                whatsappWidget.style.left = position.left + 'px';
+                whatsappWidget.style.top = position.top + 'px';
+                whatsappWidget.style.bottom = 'auto';
+                whatsappWidget.style.right = 'auto';
+            }
+        }
+
+        // Save position when dragging stops
+        const originalStopDragWithSave = stopDrag;
+        stopDrag = function(e) {
+            originalStopDragWithSave(e);
+            if (dragStarted) {
+                setTimeout(() => {
+                    saveWidgetPosition();
+                    snapToEdges();
+                }, 100);
+            }
+        };
+
+        // Load position on page load
+        loadWidgetPosition();
 
         // Initialize member section when page loads
         renderMemberList();
