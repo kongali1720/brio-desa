@@ -79,6 +79,214 @@
             z-index: 1001;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
+
+        /* WhatsApp Call Center Widget */
+        .whatsapp-widget {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .whatsapp-button {
+            width: 120px;
+            height: 120px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+            50% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.6); }
+            100% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+        }
+
+        .whatsapp-popup {
+            position: absolute;
+            bottom: 140px;
+            left: 0;
+            width: 320px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            display: none;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .whatsapp-header {
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .whatsapp-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .whatsapp-status {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .whatsapp-messages {
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            background: #f0f2f5;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.incoming {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .message.outgoing {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.incoming .message-bubble {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.outgoing .message-bubble {
+            background: #dcf8c6;
+            color: #333;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .whatsapp-actions {
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .whatsapp-quick-reply {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin: 4px 4px 4px 0;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .whatsapp-quick-reply:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        .whatsapp-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.1);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 12px;
+            border-bottom-left-radius: 4px;
+            max-width: 80%;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #999;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-popup {
+                width: 280px;
+                bottom: 130px;
+                left: -10px;
+            }
+            .whatsapp-button {
+                width: 80px;
+                height: 80px;
+            }
+            .whatsapp-button svg {
+                width: 40px;
+                height: 40px;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -668,6 +876,68 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
+    <!-- WhatsApp Call Center Widget -->
+    <div class="whatsapp-widget">
+        <div class="whatsapp-button" id="whatsappButton">
+            <img src="https://raw.githubusercontent.com/kongali1720/kongali1720.github.io/main/call_center.jpg" 
+                 alt="Call Center" 
+                 class="w-full h-full object-cover rounded-full">
+        </div>
+        
+        <div class="whatsapp-popup" id="whatsappPopup">
+            <button class="whatsapp-close" id="whatsappClose">×</button>
+            <div class="whatsapp-header">
+                <img src="https://raw.githubusercontent.com/kongali1720/kongali1720.github.io/main/call_center.jpg" alt="Call Center" class="whatsapp-avatar">
+                <div>
+                    <div class="font-semibold">BRIO DESA Support</div>
+                    <div class="whatsapp-status">Online - Siap membantu Anda</div>
+                </div>
+            </div>
+            
+            <div class="whatsapp-messages" id="whatsappMessages">
+                <div class="message incoming">
+                    <div class="message-bubble">
+                        👋 Selamat datang di BRIO DESA Support!<br>
+                        Saya siap membantu Anda hari ini.
+                        <div class="message-time">09:15</div>
+                    </div>
+                </div>
+                
+                <div class="message incoming">
+                    <div class="message-bubble">
+                        🚗 Ada yang bisa saya bantu mengenai komunitas atau kegiatan BRIO DESA?
+                        <div class="message-time">09:16</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="whatsapp-actions">
+                <div class="mb-3">
+                    <div class="whatsapp-quick-reply" onclick="sendQuickReply('Cara bergabung komunitas')">
+                        🤝 Cara bergabung
+                    </div>
+                    <div class="whatsapp-quick-reply" onclick="sendQuickReply('Jadwal kegiatan')">
+                        📅 Jadwal kegiatan
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="whatsapp-quick-reply" onclick="sendQuickReply('Lokasi base camp')">
+                        📍 Lokasi base camp
+                    </div>
+                    <div class="whatsapp-quick-reply" onclick="sendQuickReply('Biaya membership')">
+                        💰 Biaya membership
+                    </div>
+                </div>
+                <button onclick="openWhatsAppDirect()" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition flex items-center justify-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.386"/>
+                    </svg>
+                    Chat Langsung
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         // Sample member data
         const membersData = [
@@ -1144,6 +1414,182 @@
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
+        });
+
+        // WhatsApp Call Center Widget
+        const whatsappButton = document.getElementById('whatsappButton');
+        const whatsappPopup = document.getElementById('whatsappPopup');
+        const whatsappClose = document.getElementById('whatsappClose');
+        const whatsappMessages = document.getElementById('whatsappMessages');
+        
+        let isPopupOpen = false;
+        let messageCount = 2;
+
+        // Toggle popup
+        whatsappButton.addEventListener('click', () => {
+            if (!isPopupOpen) {
+                whatsappPopup.style.display = 'block';
+                isPopupOpen = true;
+            } else {
+                whatsappPopup.style.display = 'none';
+                isPopupOpen = false;
+            }
+        });
+
+        // Close popup
+        whatsappClose.addEventListener('click', () => {
+            whatsappPopup.style.display = 'none';
+            isPopupOpen = false;
+        });
+
+        // Close popup when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!whatsappButton.contains(e.target) && !whatsappPopup.contains(e.target) && isPopupOpen) {
+                whatsappPopup.style.display = 'none';
+                isPopupOpen = false;
+            }
+        });
+
+        // Auto-responses for quick replies
+        const autoResponses = {
+            'Cara bergabung komunitas': [
+                'Untuk bergabung BRIO DESA sangat mudah! 😊',
+                'Anda bisa mengisi form pendaftaran di website atau hubungi admin langsung.',
+                'Syarat: Memiliki Honda Brio dan domisili Bandung/sekitarnya.',
+                'Gratis tanpa biaya membership! 🎉'
+            ],
+            'Jadwal kegiatan': [
+                'Jadwal kegiatan rutin BRIO DESA:',
+                '🗓️ Touring: Minggu ke-2 setiap bulan',
+                '☕ Kopdar: Setiap Sabtu malam',
+                '🔧 Workshop: Bulanan (jadwal menyesuaikan)',
+                '🎉 Family Gathering: Setiap semester'
+            ],
+            'Lokasi base camp': [
+                'Base camp BRIO DESA ada di Bandung',
+                '📍 Alamat: Jl. Raya Bandung (lokasi sentral)',
+                'Biasanya kumpul di cafe/resto yang berbeda setiap minggu',
+                'Info lokasi selalu diupdate di grup WhatsApp 📱'
+            ],
+            'Biaya membership': [
+                'Kabar baik! 🎊',
+                'BRIO DESA GRATIS tanpa biaya membership',
+                'Hanya bayar saat ikut kegiatan (makan, bensin, dll)',
+                'Benefit: Diskon bengkel, merchandise, akses grup WA'
+            ]
+        };
+
+        // Send quick reply
+        window.sendQuickReply = function(message) {
+            // Add user message
+            addMessage(message, 'outgoing');
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Send auto-response after delay
+            setTimeout(() => {
+                hideTypingIndicator();
+                const responses = autoResponses[message];
+                if (responses) {
+                    responses.forEach((response, index) => {
+                        setTimeout(() => {
+                            addMessage(response, 'incoming');
+                        }, index * 1000);
+                    });
+                }
+            }, 1500);
+        };
+
+        // Add message to chat
+        function addMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    ${text}
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            whatsappMessages.appendChild(messageDiv);
+            whatsappMessages.scrollTop = whatsappMessages.scrollHeight;
+            messageCount++;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message incoming';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            whatsappMessages.appendChild(typingDiv);
+            whatsappMessages.scrollTop = whatsappMessages.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Open WhatsApp direct
+        window.openWhatsAppDirect = function() {
+            const message = encodeURIComponent('Halo admin BRIO DESA! Saya tertarik untuk bergabung dengan komunitas. Mohon info lebih lanjut 🚗');
+            window.open(`https://wa.me/6281234567890?text=${message}`, '_blank');
+            whatsappPopup.style.display = 'none';
+            isPopupOpen = false;
+            showToast('Membuka WhatsApp langsung...');
+        };
+
+        // Auto-show welcome message after 5 seconds
+        setTimeout(() => {
+            if (!isPopupOpen) {
+                // Add notification badge
+                const badge = document.createElement('div');
+                badge.style.cssText = `
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    background: #ff4444;
+                    color: white;
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: bold;
+                `;
+                badge.textContent = '1';
+                badge.id = 'whatsappBadge';
+                document.querySelector('.whatsapp-widget').appendChild(badge);
+                
+                // Animate button
+                whatsappButton.style.animation = 'pulse 1s infinite';
+            }
+        }, 5000);
+
+        // Remove badge when popup is opened
+        whatsappButton.addEventListener('click', () => {
+            const badge = document.getElementById('whatsappBadge');
+            if (badge) {
+                badge.remove();
+            }
+            whatsappButton.style.animation = '';
         });
 
         // Initialize member section when page loads
