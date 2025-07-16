@@ -977,6 +977,14 @@
                         💰 Biaya membership
                     </div>
                 </div>
+                <div class="mb-3">
+                    <div class="whatsapp-quick-reply" onclick="sendRandomReply()">
+                        🎲 Cerita random
+                    </div>
+                    <div class="whatsapp-quick-reply" onclick="sendQuickReply('Tips modifikasi')">
+                        🔧 Tips modifikasi
+                    </div>
+                </div>
                 <button onclick="openWhatsAppDirect()" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition flex items-center justify-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.386"/>
@@ -1562,9 +1570,11 @@
             if (!isPopupOpen) {
                 whatsappPopup.style.display = 'block';
                 isPopupOpen = true;
+                startAutoConversation(); // Start auto conversation when opened
             } else {
                 whatsappPopup.style.display = 'none';
                 isPopupOpen = false;
+                clearTimeout(conversationTimeout); // Clear timeout when closed
             }
         }
 
@@ -1588,6 +1598,7 @@
         whatsappClose.addEventListener('click', () => {
             whatsappPopup.style.display = 'none';
             isPopupOpen = false;
+            clearTimeout(conversationTimeout);
         });
 
         // Close popup when clicking outside
@@ -1595,6 +1606,7 @@
             if (!whatsappButton.contains(e.target) && !whatsappPopup.contains(e.target) && isPopupOpen) {
                 whatsappPopup.style.display = 'none';
                 isPopupOpen = false;
+                clearTimeout(conversationTimeout);
             }
         });
 
@@ -1602,30 +1614,136 @@
         const autoResponses = {
             'Cara bergabung komunitas': [
                 'Untuk bergabung BRIO DESA sangat mudah! 😊',
-                'Anda bisa mengisi form pendaftaran di website atau hubungi admin langsung.',
-                'Syarat: Memiliki Honda Brio dan domisili Bandung/sekitarnya.',
-                'Gratis tanpa biaya membership! 🎉'
+                'Ada beberapa cara yang bisa kamu pilih:',
+                '1️⃣ Isi form pendaftaran di website ini',
+                '2️⃣ Chat admin langsung via WhatsApp',
+                '3️⃣ Datang ke kopdar setiap Sabtu malam',
+                '📋 Syarat: Memiliki Honda Brio dan domisili Bandung/sekitarnya',
+                'Yang pasti... GRATIS tanpa biaya membership! 🎉'
             ],
             'Jadwal kegiatan': [
-                'Jadwal kegiatan rutin BRIO DESA:',
-                '🗓️ Touring: Minggu ke-2 setiap bulan',
-                '☕ Kopdar: Setiap Sabtu malam',
-                '🔧 Workshop: Bulanan (jadwal menyesuaikan)',
-                '🎉 Family Gathering: Setiap semester'
+                'Ini dia jadwal kegiatan rutin BRIO DESA:',
+                '',
+                '🗓️ **TOURING** - Minggu ke-2 setiap bulan',
+                '📍 Destinasi: Bandung Raya & Jawa Barat',
+                '',
+                '☕ **KOPDAR** - Setiap Sabtu malam jam 19:00',
+                '📍 Lokasi: Rotasi cafe di Bandung',
+                '',
+                '🔧 **WORKSHOP** - Setiap bulan',
+                '📍 Topik: Modifikasi, perawatan, tips & trik',
+                '',
+                '🎉 **FAMILY GATHERING** - Setiap 6 bulan',
+                '📍 Acara besar dengan keluarga member',
+                '',
+                'Info detail selalu diupdate di grup WhatsApp! 📱'
             ],
             'Lokasi base camp': [
-                'Base camp BRIO DESA ada di Bandung',
-                '📍 Alamat: Jl. Raya Bandung (lokasi sentral)',
+                'Base camp BRIO DESA ada di Bandung! 📍',
+                '',
+                '🏠 **Alamat:** Jl. Raya Bandung (lokasi sentral)',
+                '⏰ **Buka:** Setiap hari 09:00 - 21:00',
+                '',
+                '☕ **Kopdar Rutin:**',
                 'Biasanya kumpul di cafe/resto yang berbeda setiap minggu',
-                'Info lokasi selalu diupdate di grup WhatsApp 📱'
+                'Rotasi lokasi: Dago, Cihampelas, BTC, dll',
+                '',
+                '📱 **Info Lokasi:**',
+                'Selalu diupdate di grup WhatsApp',
+                'Ada koordinator yang kasih tau lokasi pasti',
+                '',
+                '🗺️ Mau tau lokasi detailnya? Chat admin ya!'
             ],
             'Biaya membership': [
-                'Kabar baik! 🎊',
-                'BRIO DESA GRATIS tanpa biaya membership',
-                'Hanya bayar saat ikut kegiatan (makan, bensin, dll)',
-                'Benefit: Diskon bengkel, merchandise, akses grup WA'
+                'Kabar baik nih! 🎊',
+                '',
+                '💰 **BRIO DESA 100% GRATIS!**',
+                'Tidak ada biaya membership atau iuran bulanan',
+                '',
+                '💸 **Yang perlu bayar:**',
+                '• Makan saat kopdar (sesuai pilihan)',
+                '• Bensin touring (patungan fair)',
+                '• Merchandise (jika mau beli)',
+                '',
+                '🎁 **Benefit Member:**',
+                '• Diskon service di bengkel rekanan',
+                '• Merchandise eksklusif BRIO DESA',
+                '• Akses grup WhatsApp eksklusif',
+                '• Prioritas di event dan touring',
+                '• Networking dengan sesama Brioers',
+                '',
+                'Join sekarang, untung terus! 😉'
             ]
         };
+
+        // Additional conversation starters
+        const conversationStarters = [
+            {
+                delay: 10000, // 10 seconds
+                messages: [
+                    'Btw, ada pertanyaan khusus tentang Honda Brio? 🚗',
+                    'Kami punya member yang expert di modifikasi, perawatan, sampai tips berkendara!'
+                ]
+            },
+            {
+                delay: 20000, // 20 seconds
+                messages: [
+                    'Oh iya, weekend ini ada kopdar lho! ☕',
+                    'Sabtu jam 19:00 di cafe daerah Dago',
+                    'Mau ikutan? Gratis kok, tinggal bayar minum aja 😄'
+                ]
+            },
+            {
+                delay: 30000, // 30 seconds
+                messages: [
+                    'Fun fact: BRIO DESA sudah punya 200+ member aktif! 👥',
+                    'Dan masih terus bertambah setiap bulannya',
+                    'Komunitas paling solid se-Bandung Raya! 💪'
+                ]
+            }
+        ];
+
+        // Random responses for engagement
+        const randomResponses = [
+            'Wah, seru banget kalau bisa kopdar bareng! 🎉',
+            'BRIO memang mobil yang paling fun ya! 😍',
+            'Nanti kalau udah join, pasti ketagihan sama kegiatannya! 😂',
+            'Member BRIO DESA itu kekeluargaannya dapet banget sih 🤗',
+            'Touring kemarin ke Ciwidey, viewnya amazing! 🏔️',
+            'Workshop modifikasi bulan lalu rame banget, next pasti lebih seru! 🔧'
+        ];
+
+        // Extended auto-responses
+        autoResponses['Tips modifikasi'] = [
+            'Wah, ngomongin modifikasi nih! 🔧',
+            '',
+            '🎨 **Modifikasi Populer untuk Brio:**',
+            '',
+            '1️⃣ **Eksterior:**',
+            '• Grill custom Honda Brio',
+            '• Spoiler belakang dan samping',
+            '• Velg racing ring 15-16 inch',
+            '• Lowering kit atau coilover',
+            '',
+            '2️⃣ **Interior:**',
+            '• Jok kulit atau sarung jok custom',
+            '• Steering wheel racing',
+            '• Shift knob custom',
+            '• Audio system upgrade',
+            '',
+            '3️⃣ **Performance:**',
+            '• Cold air intake',
+            '• Exhaust system custom',
+            '• ECU remap/tuning',
+            '• Strut bar depan-belakang',
+            '',
+            '💡 **Tips dari senior:**',
+            '• Budget bertahap, jangan sekaligus',
+            '• Prioritas safety dulu (rem, suspensi)',
+            '• Join workshop BRIO DESA untuk tips detail!',
+            '',
+            'Member kita banyak yang expert modifikasi! 👨‍🔧'
+        ];
 
         // Send quick reply
         window.sendQuickReply = function(message) {
@@ -1648,6 +1766,52 @@
                 }
             }, 1500);
         };
+
+        // Send random reply
+        window.sendRandomReply = function() {
+            addMessage('🎲 Cerita random', 'outgoing');
+            
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                const randomResponse = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+                addMessage(randomResponse, 'incoming');
+                
+                // Add follow-up after random response
+                setTimeout(() => {
+                    addMessage('Ada yang mau ditanya lagi? 😊', 'incoming');
+                }, 2000);
+            }, 1500);
+        };
+
+        // Auto conversation starters
+        let conversationTimeout;
+        
+        function startConversationStarters() {
+            conversationStarters.forEach((starter, index) => {
+                setTimeout(() => {
+                    if (!isPopupOpen) return; // Only send if popup is still open
+                    
+                    starter.messages.forEach((message, msgIndex) => {
+                        setTimeout(() => {
+                            if (!isPopupOpen) return;
+                            addMessage(message, 'incoming');
+                        }, msgIndex * 2000);
+                    });
+                }, starter.delay);
+            });
+        }
+
+        // Start conversation starters when popup opens
+        function startAutoConversation() {
+            clearTimeout(conversationTimeout);
+            conversationTimeout = setTimeout(() => {
+                if (isPopupOpen) {
+                    startConversationStarters();
+                }
+            }, 5000);
+        }
 
         // Add message to chat
         function addMessage(text, type) {
